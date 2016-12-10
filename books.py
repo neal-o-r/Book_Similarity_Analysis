@@ -5,6 +5,12 @@ import string
 from nltk.stem import PorterStemmer
 from nltk.corpus import stopwords
 from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import Normalizer
+from sklearn.decomposition import TruncatedSVD
+from sklearn.cluster import KMeans
+import numpy as np
+from sklearn.neighbors import DistanceMetric
 
 
 def de_gutenberger(filename):
@@ -74,16 +80,42 @@ def get_books(folder, files):
 		authors.append(author)
 		titles.append(title)
 		texts.append(txt)
-		break	
+	
 	return authors, titles, texts	
 
-def do_tfidf(texts):
+def get_matrix(texts):
 
-	vect = TfidfVectorizer(min_df=1, max_df = 1.0)
-	tfidf = vect.fit_transform(texts)
+	vectorizer = TfidfVectorizer(max_df=0.5, min_df=2,
+                                 use_idf=True, sublinear_tf=True)
 
+	tfidf = vectorizer.fit_transform(texts)
+	# get covariance
 	vari = (tfidf * tfidf.T).A
-	return tfidf
+
+	svd = TruncatedSVD(100, random_state=123)
+	normalizer = Normalizer(copy=False)
+	lsa = make_pipeline(svd, normalizer)
+
+	X = lsa.fit_transform(tfidf)
+
+	return X
+
+
+def get_clusters_and_dists(texts):
+
+	dense_matrix = get_matrix(texts)
+
+	km = KMeans(n_clusters=5, init='k-means++', max_iter=100, n_init=1)
+	
+	km.fit(dense_matrix)
+
+	clusters = km.labels_
+
+	dist = DistanceMetric.get_metric('manhattan')
+
+	dist_mat = dist.pairwise(dense_matrix)
+
+	return clusters, dist_mat
 
 if __name__ == '__main__':
 
@@ -92,4 +124,4 @@ if __name__ == '__main__':
 
 	authors, titles, texts = get_books(folder, files)
 
-	dist_mat = do_tfidf(texts)
+	clusters, dist_mat = get_clusters_and_dists(texts)

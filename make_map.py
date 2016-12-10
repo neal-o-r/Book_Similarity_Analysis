@@ -7,7 +7,7 @@ from bokeh_scatter import *
 from books import *
 
 
-def embed(dist, authors, titles):
+def embed(dist, clusters, authors, titles):
 
         seed = 123
 
@@ -17,7 +17,7 @@ def embed(dist, authors, titles):
 
         pos = mds.fit(dist).embedding_     
         
-        d = {'Author':authors, 'Title':titles,
+        d = {'Author':authors, 'Title':titles, 'Cluster':clusters,
 		'X':pos[:,0], 'Y':pos[:,1]}
         
         return pd.DataFrame(d)
@@ -25,14 +25,14 @@ def embed(dist, authors, titles):
 if __name__ == '__main__':
 
 
-	folder = "odata/"
+	folder = "data/"
 	files = os.listdir(folder)
 
 	authors, titles, texts = get_books(folder, files)
 
-	dist_mat = do_tfidf(texts)
-
-	df = embed(dist_mat, authors, titles)
+	clusters, dist_mat = get_clusters_and_dists(texts)
+	
+	df = embed(dist_mat, clusters, authors, titles)
 
 	bokeh_scatter(df)
 
