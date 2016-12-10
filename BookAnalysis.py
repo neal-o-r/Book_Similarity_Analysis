@@ -162,19 +162,3 @@ plt.clf()
 ax2.set_aspect('auto')
 nx.draw(T, pos=pos2, with_labels=True, node_size = 1200)
 plt.show()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
