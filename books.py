@@ -105,17 +105,14 @@ def get_clusters_and_dists(texts):
 
 	dense_matrix = get_matrix(texts)
 
-	km = KMeans(n_clusters=5, init='k-means++', max_iter=100, n_init=1)
+	km = KMeans(n_clusters=8, init='k-means++', max_iter=100, n_init=1
+		,random_state=123)
 	
 	km.fit(dense_matrix)
 
 	clusters = km.labels_
 
-	dist = DistanceMetric.get_metric('manhattan')
-
-	dist_mat = dist.pairwise(dense_matrix)
-
-	return clusters, dist_mat
+	return clusters, dense_matrix
 
 if __name__ == '__main__':
 
@@ -124,4 +121,4 @@ if __name__ == '__main__':
 
 	authors, titles, texts = get_books(folder, files)
 
-	clusters, dist_mat = get_clusters_and_dists(texts)
+	clusters, mat = get_clusters_and_dists(texts)

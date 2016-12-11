@@ -2,7 +2,7 @@ import pandas as pd
 from bokeh.plotting import figure, output_file, show
 from bokeh.models import ColumnDataSource, HoverTool, Div, BoxZoomTool, ResetTool, Title
 from bokeh.embed import file_html
-from bokeh.palettes import Accent6 as palette
+from bokeh.palettes import Dark2_8 as palette
 
 def make_caption(df):
 
@@ -29,10 +29,10 @@ def make_caption(df):
 		for i in range(len(cols_rows)):
 			book = cols_rows[i][j]
 			
-			if len(book) < char_len:
-				book += ' '*(char_len - len(book))
+			#if len(book) < char_len:
+			#	book += ' '*(char_len - len(book))
 				
-			book += '\t'
+			book += ' | '
 			line += book
 
 		out_string += line + '\n'
@@ -74,5 +74,6 @@ def bokeh_scatter(df):
 
 	p.circle(x='x', y='y', size=7, color='colour',
 		source=source, line_color=None)
- 
+
+
 	show(p)
