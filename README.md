@@ -7,8 +7,8 @@ Things to be done:
 - [x] Update to Python 3 for string handling
 - [ ] Generate document similarities 
 	- [x] TF-IDF
-	- [ ] LSA
+	- [x] LSA
 	- [ ] Word2Vec?
-- [x] MDS to create 2D 'map' embeding
+- [ ] K-means clustering
 - [x] Make interactive plot
 
