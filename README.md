@@ -9,6 +9,6 @@ Things to be done:
 	- [x] TF-IDF
 	- [x] LSA
 	- [ ] Word2Vec?
-- [ ] K-means clustering
+- [x] K-means clustering
 - [x] Make interactive plot
 
